@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Indicator</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .requirement {
+            color:#ff5925;
+        }
+        .requirement.met {
+            color: #26d730;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="input-box">
+        <button id="generatePassword" class="generate-button">Generate Strong Password</button>
+        <input type="password" id="password" placeholder="Password">
+        <button type="submit"><img src="./arrow.png"></button>
+        <p id="message">Password is <span id="strength"></span></p>
+        <div class="show-password-container">
+            <input type="checkbox" id="showPassword">
+            <label for="showPassword">Show Password</label>
+        </div>
+    </div>
+    <p id="requirements">
+        <span id="uppercase" class="requirement">Add uppercase</span><br>
+        <span id="lowercase" class="requirement">Add lowercase</span><br>
+        <span id="numbers" class="requirement">Add numbers</span><br>
+        <span id="symbols" class="requirement">Add symbols</span>
+    </p>
+</div>
+
+<script>
+    var pass = document.getElementById("password");
+    var msg = document.getElementById("message");
+    var str = document.getElementById("strength");
+    var uppercaseReq = document.getElementById("uppercase");
+    var lowercaseReq = document.getElementById("lowercase");
+    var numbersReq = document.getElementById("numbers");
+    var symbolsReq = document.getElementById("symbols");
+    var generatePasswordButton = document.getElementById("generatePassword");
+    var showPasswordCheckbox = document.getElementById("showPassword");
+
+    const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+    const number = "0123456789";
+    const symbol = "@#$%^&*()_+~|}{[]></-=";
+
+    function containsCharacterType(password, characterSet) {
+        for (let char of password) {
+            if (characterSet.includes(char)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function evaluatePassword() {
+        if (pass.value.length > 0) {
+            msg.style.display = "block";
+        } else {
+            msg.style.display = "none";
+        }
+
+        let hasUpperCase = containsCharacterType(pass.value, upperCase);
+        let hasLowerCase = containsCharacterType(pass.value, lowerCase);
+        let hasNumber = containsCharacterType(pass.value, number);
+        let hasSymbol = containsCharacterType(pass.value, symbol);
+
+        uppercaseReq.classList.toggle("met", hasUpperCase);
+        lowercaseReq.classList.toggle("met", hasLowerCase);
+        numbersReq.classList.toggle("met", hasNumber);
+        symbolsReq.classList.toggle("met", hasSymbol);
+
+        if (!hasUpperCase) {
+            str.innerHTML = "invalid";
+            pass.style.borderColor = "#ff5925";
+            msg.style.color = "#ff5925";
+        } else if (!hasLowerCase) {
+            str.innerHTML = "invalid";
+            pass.style.borderColor = "#ff5925";
+            msg.style.color = "#ff5925";
+        } else if (!hasNumber) {
+            str.innerHTML = "invalid";
+            pass.style.borderColor = "#ff5925";
+            msg.style.color = "#ff5925";
+        } else if (!hasSymbol) {
+            str.innerHTML = "invalid";
+            pass.style.borderColor = "#ff5925";
+            msg.style.color = "#ff5925";
+        } else if (pass.value.length < 5) {
+            str.innerHTML = "weak";
+            pass.style.borderColor = "#ff5925";
+            msg.style.color = "#ff5925";
+        } else if (pass.value.length >= 5 && pass.value.length < 10) {
+            str.innerHTML = "medium";
+            pass.style.borderColor = "#FFFF00";
+            msg.style.color = "#FFFF00";
+        } else if (pass.value.length >= 10) {
+            str.innerHTML = "strong";
+            pass.style.borderColor = "#26d730";
+            msg.style.color = "#26d730";
+        }
+    }
+
+    pass.addEventListener('input', evaluatePassword);
+
+    generatePasswordButton.addEventListener('click', () => {
+        let generatedPassword = generateStrongPassword();
+        pass.value = generatedPassword;
+        evaluatePassword();
+    });
+
+    function generateStrongPassword() {
+        let password = "";
+        let characterSets = [upperCase, lowerCase, number, symbol];
+        // Ensure each type of character is included at least once
+        characterSets.forEach(set => {
+            password += set[Math.floor(Math.random() * set.length)];
+        });
+        // Fill the remaining length with random characters from all sets
+        while (password.length < 12) {
+            let randomSet = characterSets[Math.floor(Math.random() * characterSets.length)];
+            password += randomSet[Math.floor(Math.random() * randomSet.length)];
+        }
+        // Shuffle the password to avoid predictable patterns
+        return shuffleString(password);
+    }
+
+    function shuffleString(string) {
+        let array = string.split('');
+        for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array.join('');
+    }
+
+    showPasswordCheckbox.addEventListener('change', () => {
+        pass.type = showPasswordCheckbox.checked ? 'text' : 'password';
+    });
+</script>
+
+</body>
+</html>
