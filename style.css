@@ -3,10 +3,6 @@
     padding: 0;
     font-family: 'Poppins', sans-serif;
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    box-sizing: border-box;
 }
 
 .container {
@@ -53,13 +49,13 @@ button img {
 
 #message {
     position: absolute;
-    bottom: -1.875rem;
+    bottom: -1.875rem; 
     color: #fff;
     font-size: 0.9375rem; 
     display: none;
 }
 
-button[type=submit] {
+button[type=fresh] {
     margin-top: 3.75rem; 
 }
 
@@ -97,7 +93,7 @@ button[type=submit] {
     align-items: center;
     justify-content: center;
     width: 3.125rem; 
-    height: 3.125rem;
+    height: 3.125rem; 
 }
 
 #showPassword {
@@ -107,4 +103,3 @@ button[type=submit] {
 .show-password-container input {
     margin-left: 3.125rem; 
 }
-   
