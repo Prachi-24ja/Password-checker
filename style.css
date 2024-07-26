@@ -55,7 +55,7 @@ button img {
     display: none;
 }
 
-button[type=fresh] {
+.fresh{
     margin-top: 3.75rem; 
 }
 
