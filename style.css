@@ -55,8 +55,8 @@ button img {
     display: none;
 }
 
-.fresh{
-    margin-top: 6.6rem; 
+button[type="fresh"]{
+    margin-top: 3.6rem; 
 }
 
 #requirements {
